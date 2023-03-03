@@ -1,24 +1,14 @@
 import axios from 'axios';
 
+axios.defaults.timeout = 30000;
+// axios.defaults.timeout = 100;
+axios.defaults.timeoutErrorMessage = "timeout";
 
-export const apiRequest = async (method, api_url, request_body , onSuccess, OnError) => {
-    console.log("process.env.REACT_APP_BASEURL", process.env.REACT_APP_BASEURL)
-    try {
-        const data = await axios({
-            method: method,
-            url: process.env.REACT_APP_BASEURL + api_url,
-            data: request_body
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
-                "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With"
-              }
-        })
-        onSuccess(data?.data)
-    } catch (error) {
-        OnError(error)
-    }
-
-}
+const http = axios.create({
+  baseURL: process.env.REACT_APP_BASEURL,
+  withCredentials: false,
+  headers: {
+    "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+  },
+});
+export default http ;
